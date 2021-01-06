@@ -1,0 +1,41 @@
+#crear un proyecto quarkus
+
+mvn io.quarkus:quarkus-maven-plugin:1.9.2.Final:create -DprojectGroupId=com.camarin -DprojectArtifactId=jpa-example -DclassName="com.camarin.controller.GreetingResource" -Dpath="/hello"
+
+mvn io.quarkus:quarkus-maven-plugin:1.10.3.Final:create -DprojectGroupId=org.acme -DprojectArtifactId=kafka-quickstart -Dextensions="smallrye-reactive-messaging-kafka"
+
+mvn io.quarkus:quarkus-maven-plugin:1.10.5.Final:create -DprojectGroupId=org.acme -DprojectArtifactId=amqp-quickstart -Dextensions="amqp"
+
+
+=====================
+#compilar quarkus en nativo
+mvnw package -Pnative -Dquarkus.native.container-build=true -DskipTests
+
+#generamos la imagen de quarkus con el codigo nativo compilado en linux
+docker build -f src/main/docker/Dockerfile.native -t quarkus/getting-started . 
+
+#levantamos la app de quarkus
+docker run -i --rm -p 8080:8080 quarkus/getting-started
+
+======================
+#levantar la app local - tambien tiene para poder subscribir las properties
+mvnw compile quarkus:dev -Dgreetings.message=Alo quha
+
+=======================
+#quarkus esta basado en extensiones para obtener mas funcionalidad y para ver todas estas 
+#tenemos el siguiente comando por maven
+
+mvnw quarkus:list-extensions
+
+=======================
+#para devolver en los servicios rest una respuesta json se va a tener que agregar la siguiente libreria
+
+mvnw quarkus:add-extension -Dextensions="quarkus-resteasy-jsonb" -> esto nos agrega la dependencia para trabajar
+
+
+=======================
+levantar la base mariadb
+
+docker run -ti --rm -e MYSQL_ROOT_PASSWORD=developer -e MYSQL_USER=developer -e MYSQL_PASSWORD=developer -e MYSQL_DATABASE=developer -v c:\data:/var/lib/mysql  -p 3306:3306 mariadb:10.5.8
+
+docker run -d -e MYSQL_ROOT_PASSWORD=developer -e MYSQL_USER=developer -e MYSQL_PASSWORD=developer -e MYSQL_DATABASE=developer -v c:\data:/var/lib/mysql  -p 3306:3306 mariadb:10.5.8

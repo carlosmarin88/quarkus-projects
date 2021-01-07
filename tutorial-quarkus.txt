@@ -7,6 +7,11 @@ mvn io.quarkus:quarkus-maven-plugin:1.10.3.Final:create -DprojectGroupId=org.acm
 mvn io.quarkus:quarkus-maven-plugin:1.10.5.Final:create -DprojectGroupId=org.acme -DprojectArtifactId=amqp-quickstart -Dextensions="amqp"
 
 
+mvn io.quarkus:quarkus-maven-plugin:1.10.5.Final:create -DprojectGroupId=org.acme -DprojectArtifactId=security-jwt-quickstart -DclassName="org.acme.security.jwt.TokenSecuredResource" -Dpath="/secured" 
+
+-Dextensions="resteasy-jackson, jwt"
+cd security-jwt-quickstart
+
 =====================
 #compilar quarkus en nativo
 mvnw package -Pnative -Dquarkus.native.container-build=true -DskipTests
@@ -39,3 +44,7 @@ levantar la base mariadb
 docker run -ti --rm -e MYSQL_ROOT_PASSWORD=developer -e MYSQL_USER=developer -e MYSQL_PASSWORD=developer -e MYSQL_DATABASE=developer -v c:\data:/var/lib/mysql  -p 3306:3306 mariadb:10.5.8
 
 docker run -d -e MYSQL_ROOT_PASSWORD=developer -e MYSQL_USER=developer -e MYSQL_PASSWORD=developer -e MYSQL_DATABASE=developer -v c:\data:/var/lib/mysql  -p 3306:3306 mariadb:10.5.8
+
+=======================
+como debuguear en quarkus
+https://quarkus.io/blog/vscode-quarkus-1.2.0/

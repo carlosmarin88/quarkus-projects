@@ -43,9 +43,8 @@ You can then execute your native executable with: `./target/security-jwt-quickst
 
 If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.html.
 
-# RESTEasy JSON serialisation using Jackson
+# RESTEasy JAX-RS
 
-<p>This example demonstrate RESTEasy JSON serialisation by letting you list, add and remove quark types from a list.</p>
-<p><b>Quarked!</b></p>
+<p>A Hello World RESTEasy resource</p>
 
 Guide: https://quarkus.io/guides/rest-json

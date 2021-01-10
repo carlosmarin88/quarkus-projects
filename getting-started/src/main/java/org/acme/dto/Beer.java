@@ -17,10 +17,17 @@ public class Beer {
 
     @Min(100)
     private int capacity;
-
+    
     @NotExpired
     @JsonbDateFormat("yyyy-MM-dd")
     private LocalDate expired;
+
+    public Beer(){}
+
+    public Beer(String name, int capacity) {
+        this.name = name;
+        this.capacity = capacity;
+    }
 
     public String getName() {
         return name;
@@ -38,16 +45,19 @@ public class Beer {
         this.capacity = capacity;
     }
 
-    @Override
-    public String toString() {
-        return "Beer [capacity=" + capacity + ", name=" + name + "]";
+
+
+    public LocalDate getExpired() {
+        return expired;
     }
 
-    public Beer(){}
+    public void setExpired(LocalDate expired) {
+        this.expired = expired;
+    }
 
-    public Beer(String name, int capacity) {
-        this.name = name;
-        this.capacity = capacity;
+    @Override
+    public String toString() {
+        return "Beer [capacity=" + capacity + ", expired=" + expired + ", name=" + name + "]";
     }
 
 

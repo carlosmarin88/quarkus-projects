@@ -4,14 +4,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.microprofile.config.spi.ConfigSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class InMemoryConfigSource implements ConfigSource {
 
 
     private Map<String, String> prop = new HashMap<>();
 
-    public InMemoryConfigSource(){
-        //se puede usar la base de datos tambien en estos casos
+    private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryConfigSource.class);
+
+    public InMemoryConfigSource() {
+        // se puede usar la base de datos tambien en estos casos
+        LOGGER.info("***    Traer configuraciones en memoria  ***");
         this.prop.put("greetings.message", "Hello In Memory");
     }
 

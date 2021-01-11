@@ -1,7 +1,6 @@
 package org.acme.resource;
 
 import javax.inject.Inject;
-import javax.print.attribute.standard.Media;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -13,6 +12,7 @@ import javax.ws.rs.core.Response;
 
 import org.acme.dto.Beer;
 import org.acme.dto.WorldClock;
+import org.acme.headers.WorldClockHeaders;
 import org.acme.services.GreetingsService;
 import org.acme.services.WorldClockService;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
@@ -54,7 +54,11 @@ public class GreetingResource {
     @Path("/now")
     @Produces(MediaType.APPLICATION_JSON)
     public WorldClock getNow(){
-        return this.worldClockService.getNow();
+
+        WorldClockHeaders worldClockHeaders = new WorldClockHeaders();
+        worldClockHeaders.logger = "DEBUG";
+
+        return this.worldClockService.getNow(worldClockHeaders);
     }
 
 

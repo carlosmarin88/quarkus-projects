@@ -1,11 +1,16 @@
 package org.acme.resource;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.CompletionStage;
+
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
@@ -71,5 +76,37 @@ public class GreetingResource {
         .path("api/json/cet/now").request()
         .get(WorldClock.class);
     }
+
+    @GET
+    @Path("/now/{where}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public WorldClock getNowByWhere(@PathParam("where") String where){
+        return this.worldClockService.getNowByWhere(where);
+    }
+
+    @GET
+    @Path("/times")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<WorldClock> getTimes(){
+        
+        WorldClock cet = worldClockService.getNowByWhere("cet");
+        WorldClock gmt = worldClockService.getNowByWhere("gmt");
+
+        return Arrays.asList(cet,gmt);
+    }
+
+    @GET
+    @Path("/times-2")
+    @Produces(MediaType.APPLICATION_JSON)
+    public CompletionStage<List<WorldClock>> getTimes2(){
+        
+        //corren los dos en paralelo y ejecuta la accion una vez los dos resuelto
+        CompletionStage<WorldClock> cet = worldClockService.getNowByWhere2("cet");
+       
+        return cet.thenCombineAsync(worldClockService.getNowByWhere2("gmt"),
+        (cetResult, gmtResult)-> Arrays.asList(cetResult,gmtResult) );
+    }
+
+
 
 }

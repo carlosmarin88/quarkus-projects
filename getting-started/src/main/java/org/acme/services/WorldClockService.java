@@ -1,8 +1,11 @@
 package org.acme.services;
 
+import java.util.concurrent.CompletionStage;
+
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -27,4 +30,15 @@ public interface WorldClockService {
     //Otra manera de settear header con un objeto
     WorldClock getNow(@BeanParam WorldClockHeaders wClockHeaders);
     
+    @Path("/json/{where}/now")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    WorldClock getNowByWhere(@PathParam("where") String where);
+
+    @Path("/json/{where}/now")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    CompletionStage<WorldClock> getNowByWhere2(@PathParam("where") String where);
+
+
 }

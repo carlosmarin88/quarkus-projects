@@ -5,7 +5,8 @@ import org.eclipse.microprofile.health.HealthCheckResponse;
 import org.eclipse.microprofile.health.HealthCheckResponseBuilder;
 import org.eclipse.microprofile.health.Readiness;
 
-@Readiness
+//lo apago porque uso CDI
+//@Readiness
 public class ReadnessHealthCheck implements HealthCheck {
 
 

@@ -9,7 +9,8 @@ import org.eclipse.microprofile.health.HealthCheckResponse;
 import org.eclipse.microprofile.health.HealthCheckResponseBuilder;
 import org.eclipse.microprofile.health.Liveness;
 
-@Liveness
+//lo apago porque uso CDI 
+//@Liveness
 public class LivenessHealthCheck implements HealthCheck {
 
     @Override

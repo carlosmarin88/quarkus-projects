@@ -21,11 +21,20 @@ import org.acme.dto.WorldClock;
 import org.acme.headers.WorldClockHeaders;
 import org.acme.services.GreetingsService;
 import org.acme.services.WorldClockService;
+import org.eclipse.microprofile.metrics.MetricUnits;
+import org.eclipse.microprofile.metrics.annotation.Counted;
+import org.eclipse.microprofile.metrics.annotation.Gauge;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 @Path("/api")
 public class GreetingResource {
     
+
+    private Long maxTemperature = 50L;
+
+
+
     @Inject
     GreetingsService greetingService;
 
@@ -59,6 +68,10 @@ public class GreetingResource {
     @GET
     @Path("/now")
     @Produces(MediaType.APPLICATION_JSON)
+    //medir el tiempo de las llamadas al servicio
+    @Timed(name = "CheckTimeGetNow", 
+    description = "Time to get current time", unit = MetricUnits.SECONDS)
+    @Counted(name = "Name of Get Time", description = "Numbers of calls")
     public WorldClock getNow(){
 
         WorldClockHeaders worldClockHeaders = new WorldClockHeaders();
@@ -105,6 +118,11 @@ public class GreetingResource {
        
         return cet.thenCombineAsync(worldClockService.getNowByWhere2("gmt"),
         (cetResult, gmtResult)-> Arrays.asList(cetResult,gmtResult) );
+    }
+
+    @Gauge(name = "MaxTemp", description = "Max Temperature", unit = MetricUnits.NONE)
+    public Long geMaxTemp(){
+        return maxTemperature;
     }
 
 

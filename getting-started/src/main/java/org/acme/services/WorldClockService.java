@@ -1,5 +1,6 @@
 package org.acme.services;
 
+import java.time.temporal.ChronoUnit;
 import java.util.concurrent.CompletionStage;
 
 import javax.ws.rs.BeanParam;
@@ -10,7 +11,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.acme.dto.WorldClock;
+import org.acme.dto.WorldClockFallback;
 import org.acme.headers.WorldClockHeaders;
+import org.eclipse.microprofile.faulttolerance.Fallback;
+import org.eclipse.microprofile.faulttolerance.Retry;
 import org.eclipse.microprofile.rest.client.annotation.ClientHeaderParam;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
@@ -25,6 +29,9 @@ public interface WorldClockService {
     @GET
     @Path("json/cet/now")
     @Produces(MediaType.APPLICATION_JSON)
+    @Retry(maxRetries = 2, delay = 1, delayUnit = ChronoUnit.SECONDS)
+    //devuelvo una respuesta predefinida despues de reintentar lo que haya configurado
+    @Fallback(WorldClockFallback.class)
     //aca seteamos datos en el hedaer
     //@ClientHeaderParam(name = "X-Logger", value = "DEBUG")
     //Otra manera de settear header con un objeto

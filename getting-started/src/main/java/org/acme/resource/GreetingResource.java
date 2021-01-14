@@ -27,6 +27,8 @@ import org.eclipse.microprofile.metrics.annotation.Gauge;
 import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
+import io.opentracing.Tracer;
+
 @Path("/api")
 public class GreetingResource {
     
@@ -41,6 +43,9 @@ public class GreetingResource {
     @RestClient
 	@Inject
     WorldClockService worldClockService;
+
+    @Inject
+    Tracer tracer;
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
@@ -60,6 +65,7 @@ public class GreetingResource {
     @Path("/beer")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createBeer(@Valid Beer beer){
+        this.tracer.activeSpan().setBaggageItem("beer", beer.toString());
         System.out.println(beer);
         return Response.ok().build();
 

@@ -28,10 +28,18 @@ import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import io.opentracing.Tracer;
+import io.quarkus.mailer.Mail;
+import io.quarkus.mailer.Mailer;
+import io.quarkus.mailer.ReactiveMailer;
 
 @Path("/api")
 public class GreetingResource {
     
+    @Inject
+    Mailer mailer;
+
+    @Inject
+    ReactiveMailer reactiveMailer;
 
     private Long maxTemperature = 50L;
 
@@ -82,8 +90,12 @@ public class GreetingResource {
 
         WorldClockHeaders worldClockHeaders = new WorldClockHeaders();
         worldClockHeaders.logger = "DEBUG";
+        WorldClock now = this.worldClockService.getNow(worldClockHeaders);
 
-        return this.worldClockService.getNow(worldClockHeaders);
+        this.mailer.send(Mail.withText("carlosmarin151288@gmail.com", "Han consultado el tiempo",
+         String.format("El tiempo consultado es %s ", now.getCurrentDateTime())));
+        
+        return now;
     }
 
     @GET
